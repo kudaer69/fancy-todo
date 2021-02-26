@@ -66,3 +66,13 @@ $(document).on('click', '.delete-btn', e => {
   e.preventDefault();
   deleteTodo($('.delete-btn').data('id'));
 });
+
+$(document).on('click', '.title-main', e => {
+  e.preventDefault();
+  quotes();
+});
+
+$(document).on('click', '#quotes', e => {
+  e.preventDefault();
+  homeButton;
+});

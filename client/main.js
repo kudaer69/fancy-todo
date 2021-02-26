@@ -12,6 +12,7 @@ const auth = () => {
     $('#home-page').show();
     $('#create').hide();
     $('#done').hide();
+    $('#quotes').hide();
     read();
   }
 };
@@ -102,7 +103,7 @@ const read = () => {
           <div class="todo">
             <div class="container">
               <div class="row">
-                <div class="col-9"><h4>${el.title}</h4></div>
+                <div class="col-9"><h4 class="title-main" style="cursor: pointer;">${el.title}</h4></div>
                 <div class="col-3"><h6>${el.due_date}</h6></div>
               </div>
             </div>
@@ -136,6 +137,7 @@ const homeButton = () => {
   $('#done').hide();
   $('#edit').hide();
   $('#main').show();
+  $('#quotes').hide();
   read();
 };
 
@@ -302,3 +304,52 @@ const deleteTodo = (id) => {
       $('#home-error').show();
     })
 };
+
+const gSignIn = (user) => {
+  $.ajax({
+    url: base_URL + `loginOauth`,
+    method: 'POST',
+    data: {
+      token: googleUser.getAuthResponse().id_token
+    }
+  })
+    .done(res => {
+      localStorage.setItem('token', res.token);
+      auth();
+    })
+    .fail(err => {
+      $('#main-error').show();
+      $('#main-error').text(err.responseJSON);
+      $('#main-success').hide();
+    })
+};
+
+const quotes = () => {
+  $.ajax({
+    url: base_URL + 'quotes',
+    method: 'GET',
+    headers: {
+      token : localStorage.getItem('token')
+    }
+  })
+    .done(res => {
+      $('#quotes').show();
+      $('#home-error').hide();
+      $('#home-success').hide();
+      $('#create').hide();
+      $('#main').hide();
+      $('#done').hide();
+      $('#edit').hide();
+      $('#quotes').html(`
+      <div class="container">
+        <h4>${res.data.content}</h4>
+        <h6>${res.data.originator.name}</h6>
+      </div>
+      `)
+    })
+    .fail(err => {
+      $('#home-error').text(err.responseJSON);
+      $('#home-error').show();
+    })
+};
+
