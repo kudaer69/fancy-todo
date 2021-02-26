@@ -1,4 +1,5 @@
 const { Todo } = require('../models');
+const axios = require('axios');
 
 class TodoController {
   static create (req, res, next) {
@@ -81,6 +82,22 @@ class TodoController {
       .then(() => res.status(201).json({ message: `Success delete ${todo.title} todo` }))
       .catch(next)
   };
+  
+  static quotes (req, res, next) {
+    console.log(`URL: ${req.originalUrl}`);
+
+    axios({
+      url: 'https://quotes15.p.rapidapi.com/quotes/random/',
+      mehtod: 'GET',
+      headers: {
+        "x-rapidapi-key": 'bdecbcb4ecmsh59961cf6f572271p1675bcjsn8e969074c305',
+        "x-rapidapi-host": "quotes15.p.rapidapi.com",
+        "useQueryString": true
+      }
+    })
+      .then(result => res.json({ data: result.data }))
+      .catch(next)
+  }
 };
 
 module.exports = TodoController;

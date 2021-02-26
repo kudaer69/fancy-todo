@@ -19,10 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     username: {
       type: DataTypes.STRING,
-      unique: { msg: `Username is invalid or already taken` },
-      validate: {
-        notEmpty: { msg: `Username cannot be empty` }
-      }
+      unique: { msg: `Username is invalid or already taken` }
     },
     email: {
       type: DataTypes.STRING,
